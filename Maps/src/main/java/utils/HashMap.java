@@ -24,21 +24,21 @@ public class HashMap {
         return size;
     }
     
-    private int hashFunction(String key){
+    private int calculateSlot(String key){
         int hash = key.hashCode();
         hash = Math.abs(hash) % data.length;
         return hash;
     }
     
     public String put(String key, String value){
-        int calculatedSlot = hashFunction(key);
-        if(data[calculatedSlot] == null){
+        int slot = calculateSlot(key);
+        if(data[slot] == null){
             Entry newEntry = new Entry(key, value);
-            data[calculatedSlot] = newEntry;
+            data[slot] = newEntry;
             size++;
             return null;
         }else{
-            String oldValue = data[calculatedSlot].updateValue(value);
+            String oldValue = data[slot].updateValue(value);
             return oldValue;
         }
     }
