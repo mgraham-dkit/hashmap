@@ -5,7 +5,7 @@ package utils;
  * @author michelle
  */
 public class HashMap {
-    private static final int DEFAULT_CAPACITY = 23;
+    private static final int DEFAULT_CAPACITY = 20;
     private Entry [] data;
     private int size;
     
@@ -24,27 +24,27 @@ public class HashMap {
         return size;
     }
     
-    private int calculateSlot(String key){
+    private int hashFunction(String key){
         int hash = key.hashCode();
         hash = Math.abs(hash) % data.length;
         return hash;
     }
     
     public String put(String key, String value){
-        int slot = calculateSlot(key);
-        if(data[slot] == null){
+        int calculatedSlot = hashFunction(key);
+        if(data[calculatedSlot] == null){
             Entry newEntry = new Entry(key, value);
-            data[slot] = newEntry;
+            data[calculatedSlot] = newEntry;
             size++;
             return null;
         }else{
-            String oldValue = data[slot].updateValue(value);
+            String oldValue = data[calculatedSlot].updateValue(value);
             return oldValue;
         }
     }
     
     private static class Entry{
-        private final String key;
+        private String key;
         private String value;
         
         public Entry(String key, String value){
