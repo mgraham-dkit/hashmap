@@ -24,14 +24,15 @@ public class HashMap {
         return size;
     }
     
-    private int calculateSlot(String key){
+    private int hash(String key){
         int hash = key.hashCode();
-        hash = Math.abs(hash) % data.length;
+        hash = Math.abs(hash);
+        hash = hash % data.length;
         return hash;
     }
     
     public String put(String key, String value){
-        int slot = calculateSlot(key);
+        int slot = hash(key);
         if(data[slot] == null){
             Entry newEntry = new Entry(key, value);
             data[slot] = newEntry;
