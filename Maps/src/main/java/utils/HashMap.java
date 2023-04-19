@@ -5,7 +5,7 @@ package utils;
  * @author michelle
  */
 public class HashMap {
-    private static final int DEFAULT_CAPACITY = 20;
+    private static final int DEFAULT_CAPACITY = 103;
     private Entry [] data;
     private int size;
     
@@ -35,7 +35,14 @@ public class HashMap {
         if(key == null || value == null){
             throw new IllegalArgumentException("Null fields not permitted");
         }
+        if(size == data.length){
+            data = growMap();
+        }
+        
         int slot = hash(key);
+        System.out.println("Size of map: " + size + ", capacity: " + data.length);
+        System.out.println("Slot calculated: " + slot);
+        
         if(data[slot] == null){
             Entry newEntry = new Entry(key, value);
             data[slot] = newEntry;
@@ -58,6 +65,22 @@ public class HashMap {
         }else{
             return null;
         }
+    }
+    
+    private Entry[] growMap(){
+        Entry[] newMap = new Entry[data.length*2];
+        for(int i = 0; i < data.length; i++){
+            String key = data[i].key;
+            int slot = key.hashCode();
+            slot = Math.abs(slot);
+            slot = slot % newMap.length;
+            if(newMap[slot] != null){
+                throw new MapFullException("Cannot complete resize operation. Continued action would result in data loss.");
+            }
+            newMap[slot]=data[i];
+        }
+        
+        return newMap;
     }
     
     private static class Entry{
